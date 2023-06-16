@@ -8,10 +8,11 @@ export class AuthUserDto {
   })
   walletAddress: string;
 
+  // @IsString()
+  // @Matches(/.+#[0-9]{4}$/, {
+  //   // /^[A-Za-zㄱ-ㅎ가-힣0-9].*#[0-9]{4}$/
+  //   message: `Discord ID format was entered incorrectly`,
+  // })
   @IsString()
-  @Matches(/.+#[0-9]{4}$/, {
-    // /^[A-Za-zㄱ-ㅎ가-힣0-9].*#[0-9]{4}$/
-    message: `Discord ID format was entered incorrectly`,
-  })
   discordTag: string;
 }
