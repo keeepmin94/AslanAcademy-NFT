@@ -26,7 +26,7 @@ export class User extends BaseEntity {
   createAt: Date;
 
   @OneToMany((type) => UserDonate, (userDonate) => userDonate.user, {
-    eager: true,
+    eager: false,
   })
   userDonates: UserDonate[];
 }

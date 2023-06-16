@@ -9,6 +9,7 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { UserRepository } from './user.repository';
 import { JwtService } from '@nestjs/jwt';
 import { User } from './user.entity';
+import { UserDonate } from './userDonate.entity';
 import { UserDonateRepository } from './userDonate.repository';
 
 @Injectable()
@@ -47,7 +48,7 @@ export class UserService {
     const user = this.userRepository.findOrCreateUser(
       member.id,
       walletAddress,
-      discordTag,
+      member.user.username,
     );
 
     const payload = { discordId: member.id };
@@ -57,9 +58,17 @@ export class UserService {
     return { accessToken: accessToken };
   }
 
-  // async checkDonate(user: User): Promise<boolean> {
+  async checkDonate(user: User): Promise<UserDonate[]> {
+    try {
+      const userDonates = await this.userDonateRepository.checkDonate(user);
+      if (userDonates === null)
+        throw new NotFoundException(`Can't find Users donations'`);
 
-  // }
+      return userDonates;
+    } catch (error) {
+      throw new InternalServerErrorException();
+    }
+  }
 
   async donate(donationAmount: number, user: User): Promise<void> {
     try {

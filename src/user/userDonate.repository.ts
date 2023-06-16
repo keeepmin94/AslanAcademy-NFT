@@ -9,10 +9,10 @@ export class UserDonateRepository extends Repository<UserDonate> {
     super(UserDonate, dataSource.createEntityManager());
   }
 
-  // async checkDonate(user: User): Promise<boolean> {
-  //   const userDonates = await this.find({ where: { user } });
-  //   return userDonates.length > 0;
-  // }
+  async checkDonate(user: User): Promise<UserDonate[]> {
+    const userDonates = await this.find({ where: { user: { id: user.id } } });
+    return userDonates;
+  }
 
   async donate(donationAmount: number, user: User): Promise<void> {
     await this.save({ donationAmount, user });

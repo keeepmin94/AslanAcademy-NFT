@@ -12,6 +12,7 @@ import { UserService } from './user.service';
 import { AuthGuard } from '@nestjs/passport';
 import { GetUser } from './get-user.decorator';
 import { User } from './user.entity';
+import { UserDonate } from './userDonate.entity';
 
 @Controller('user')
 export class UserController {
@@ -32,11 +33,11 @@ export class UserController {
     return this.userService.authUser(authUserDto);
   }
 
-  // @Get('/isdonate')
-  // @UseGuards(AuthGuard())
-  // checkDonate(@GetUser() user: User): Promise<boolean> {
-  //   return false;
-  // }
+  @Get('/isdonate')
+  @UseGuards(AuthGuard())
+  checkDonate(@GetUser() user: User): Promise<UserDonate[]> {
+    return this.userService.checkDonate(user);
+  }
 
   @Post('/donate')
   @UseGuards(AuthGuard())
