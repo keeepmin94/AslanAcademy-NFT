@@ -13,6 +13,6 @@ export class NftsService {
 
   async getAllNftParts(): Promise<NftCategory[]> {
     //return this.nftCategoryRepository.getAllNftParts(); //custom repository 에러 해결 못해서 typeORM repository 사용
-    return this.nftCategoryRepository.find();
+    return await this.nftCategoryRepository.find();
   }
 }

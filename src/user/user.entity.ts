@@ -5,8 +5,10 @@ import {
   CreateDateColumn,
   PrimaryGeneratedColumn,
   OneToMany,
+  OneToOne,
 } from 'typeorm';
 import { UserDonate } from './userDonate.entity';
+import { NftCombination } from 'src/entity/nftCombination.entity';
 
 @Entity()
 export class User extends BaseEntity {
@@ -29,4 +31,9 @@ export class User extends BaseEntity {
     eager: false,
   })
   userDonates: UserDonate[];
+
+  @OneToOne((type) => NftCombination, (userNft) => userNft.user, {
+    eager: false,
+  })
+  userNft: NftCombination;
 }

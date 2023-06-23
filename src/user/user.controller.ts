@@ -6,6 +6,7 @@ import {
   UseGuards,
   ValidationPipe,
   Req,
+  Query,
 } from '@nestjs/common';
 import { AuthUserDto } from './dto/auth-user.dto';
 import { UserService } from './user.service';
@@ -18,9 +19,9 @@ import { UserDonate } from './userDonate.entity';
 export class UserController {
   constructor(private userService: UserService) {}
 
-  @Post('/login')
+  @Get('/login')
   logIn(
-    @Body('walletAddress') walletAddress: string,
+    @Query('walletAddress') walletAddress: string,
   ): Promise<{ accessToken: string }> {
     console.log(walletAddress);
     return this.userService.login(walletAddress);
@@ -50,4 +51,9 @@ export class UserController {
   test(@GetUser() user: User) {
     console.log('user', user);
   }
+
+  // @Get()
+  // checkOverlap(@Query('combination') combination: string): Promise<boolean> {
+  //   return true;
+  // }
 }
