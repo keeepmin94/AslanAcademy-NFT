@@ -8,7 +8,7 @@ import {
   OneToOne,
 } from 'typeorm';
 import { UserDonate } from './userDonate.entity';
-import { NftCombination } from 'src/entity/nftCombination.entity';
+import { NftCombination } from 'src/nfts/entities/nftsCombination.entity';
 
 @Entity()
 export class User extends BaseEntity {
