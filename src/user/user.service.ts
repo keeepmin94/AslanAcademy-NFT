@@ -6,11 +6,11 @@ import {
 import { AuthUserDto } from './dto/auth-user.dto';
 import { DiscordAuth } from './discordAuth';
 import { InjectRepository } from '@nestjs/typeorm';
-import { UserRepository } from './user.repository';
+import { UserRepository } from './repositories/user.repository';
 import { JwtService } from '@nestjs/jwt';
-import { User } from './user.entity';
-import { UserDonate } from './userDonate.entity';
-import { UserDonateRepository } from './userDonate.repository';
+import { User } from './entities/user.entity';
+import { UserDonate } from './entities/userDonate.entity';
+import { UserDonateRepository } from './repositories/userDonate.repository';
 
 @Injectable()
 export class UserService {
@@ -45,7 +45,7 @@ export class UserService {
       throw new NotFoundException(`Can't find User ${discordTag}`);
     }
 
-    const user = this.userRepository.findOrCreateUser(
+    await this.userRepository.findOrCreateUser(
       member.id,
       walletAddress,
       member.user.username,

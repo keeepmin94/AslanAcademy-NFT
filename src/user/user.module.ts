@@ -2,14 +2,14 @@ import { Module } from '@nestjs/common';
 import { UserController } from './user.controller';
 import { UserService } from './user.service';
 import { DiscordAuth } from './discordAuth';
-import { UserRepository } from './user.repository';
+import { UserRepository } from './repositories/user.repository';
 import { TypeOrmModule } from '@nestjs/typeorm';
-import { User } from './user.entity';
-import { UserDonate } from './userDonate.entity';
+import { User } from './entities/user.entity';
+import { UserDonate } from './entities/userDonate.entity';
 import { JwtModule } from '@nestjs/jwt';
 import { PassportModule } from '@nestjs/passport';
 import { JwtStrategy } from './jwt.strategy';
-import { UserDonateRepository } from './userDonate.repository';
+import { UserDonateRepository } from './repositories/userDonate.repository';
 
 @Module({
   imports: [

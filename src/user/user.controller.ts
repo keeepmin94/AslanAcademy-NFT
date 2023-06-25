@@ -12,8 +12,8 @@ import { AuthUserDto } from './dto/auth-user.dto';
 import { UserService } from './user.service';
 import { AuthGuard } from '@nestjs/passport';
 import { GetUser } from './get-user.decorator';
-import { User } from './user.entity';
-import { UserDonate } from './userDonate.entity';
+import { User } from './entities/user.entity';
+import { UserDonate } from './entities/userDonate.entity';
 
 @Controller('user')
 export class UserController {
