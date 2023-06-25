@@ -2,9 +2,8 @@ import { Injectable, NotFoundException } from '@nestjs/common';
 import { Client, GatewayIntentBits, Guild } from 'discord.js';
 
 const botToken =
-  'MTA4NTE5MDIxODk2NzE3MTA5Mg.GdAMRY.IW3XcKE26ZSPLIgTTxT0pl-kGQGHOFjN0LmW64';
-const serverId = '1085192270883602543';
-const userId = '411800417739997184';
+  'MTExMDYyODU3NzY2MzI3NTA2OA.GRcceG.eziMJRDp6uyxDgTjTundrslWgGJnAMXyLdHK80'; //MTA4NTE5MDIxODk2NzE3MTA5Mg.GdAMRY.IW3XcKE26ZSPLIgTTxT0pl-kGQGHOFjN0LmW64
+const serverId = '1045385827607400478'; //1085192270883602543
 
 @Injectable()
 export class DiscordAuth {
