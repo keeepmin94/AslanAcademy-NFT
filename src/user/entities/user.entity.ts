@@ -6,6 +6,7 @@ import {
   PrimaryGeneratedColumn,
   OneToMany,
   OneToOne,
+  JoinColumn,
 } from 'typeorm';
 import { UserDonate } from './userDonate.entity';
 import { NftCombination } from 'src/user/entities/nftsCombination.entity';
@@ -32,6 +33,7 @@ export class User extends BaseEntity {
   })
   userDonates: UserDonate[];
 
+  @JoinColumn()
   @OneToOne((type) => NftCombination, (userNft) => userNft.user, {
     eager: false,
   })

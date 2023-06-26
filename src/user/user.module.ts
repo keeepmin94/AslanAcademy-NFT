@@ -10,6 +10,7 @@ import { JwtModule } from '@nestjs/jwt';
 import { PassportModule } from '@nestjs/passport';
 import { JwtStrategy } from './jwt.strategy';
 import { UserDonateRepository } from './repositories/userDonate.repository';
+import { NftCombination } from './entities/nftsCombination.entity';
 
 @Module({
   imports: [
@@ -18,7 +19,7 @@ import { UserDonateRepository } from './repositories/userDonate.repository';
       secret: 'Aslan1234',
       signOptions: { expiresIn: 60 * 60 },
     }),
-    TypeOrmModule.forFeature([User, UserDonate]),
+    TypeOrmModule.forFeature([User, UserDonate, NftCombination]),
   ],
   controllers: [UserController],
   providers: [

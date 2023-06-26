@@ -34,7 +34,7 @@ export class UserController {
     return this.userService.authUser(authUserDto);
   }
 
-  @Get('/isdonate')
+  @Get('/isDonate')
   @UseGuards(AuthGuard())
   checkDonate(@GetUser() user: User): Promise<UserDonate[]> {
     return this.userService.checkDonate(user);
@@ -52,8 +52,17 @@ export class UserController {
     console.log('user', user);
   }
 
-  // @Get()
-  // checkOverlap(@Query('combination') combination: string): Promise<boolean> {
-  //   return true;
-  // }
+  @Get('/checkOverlap')
+  checkOverlap(@Query('combination') combination: string): Promise<boolean> {
+    return this.userService.checkOverlap(combination);
+  }
+
+  @Post('/mint')
+  @UseGuards(AuthGuard())
+  mint(
+    @GetUser() user: User,
+    @Body('combination') combination: string,
+  ): Promise<void> {
+    return this.userService.mint(combination, user);
+  }
 }
