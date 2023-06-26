@@ -280,3 +280,10 @@ None
 ```
 docker-compose up -d
 ```
+
+## todo
+- config 파일들 따로 설정
+- custom repository 삭제
+- 파일/폴더 정리
+- 코드 리팩터링
+- 코드 개선
