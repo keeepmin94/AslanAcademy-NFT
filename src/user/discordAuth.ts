@@ -2,9 +2,8 @@ import { Injectable, NotFoundException } from '@nestjs/common';
 import { Client, GatewayIntentBits, Guild } from 'discord.js';
 
 const botToken =
-  'MTA4NTE5MDIxODk2NzE3MTA5Mg.GdAMRY.IW3XcKE26ZSPLIgTTxT0pl-kGQGHOFjN0LmW64';
-const serverId = '1085192270883602543';
-const userId = '411800417739997184';
+  'MTExMDYyODU3NzY2MzI3NTA2OA.GRcceG.eziMJRDp6uyxDgTjTundrslWgGJnAMXyLdHK80'; //MTA4NTE5MDIxODk2NzE3MTA5Mg.GdAMRY.IW3XcKE26ZSPLIgTTxT0pl-kGQGHOFjN0LmW64
+const serverId = '1045385827607400478'; //1085192270883602543
 
 @Injectable()
 export class DiscordAuth {
@@ -22,20 +21,31 @@ export class DiscordAuth {
     console.log('서버 객체 생성');
   }
 
-  async searchMember(discordTag: string) {
+  async searchMember(discordName: string) {
     try {
-      const [nick, tag] = discordTag.split('#');
+      //const [nick, tag] = discordTag.split('#');
       // 특정 길드에서 이름이 포함된 멤버를 최대 limit명까지 검색
       const members = await this.server.members.search({
-        query: nick,
+        query: discordName,
         limit: 5,
       });
 
+      //console.log(members);
+
+      // let isExist = false;
+      // // //검색된 멤버의 정보 출력
+      // let tmp;
+      // members.forEach((member) => {
+      //   if (tag === member.user.discriminator.toString()) {
+      //     isExist = true;
+      //     tmp = member;
+      //     return false;
+      //   }
+      // });
       let isExist = false;
-      // //검색된 멤버의 정보 출력
       let tmp;
       members.forEach((member) => {
-        if (tag === member.user.discriminator.toString()) {
+        if (discordName === member.user.username) {
           isExist = true;
           tmp = member;
           return false;
@@ -44,7 +54,7 @@ export class DiscordAuth {
 
       //유저 없을시 에러 처리
       if (!isExist) {
-        throw new NotFoundException(`Can't not found User ${discordTag}`);
+        throw new NotFoundException(`Can't not found User ${discordName}`);
       }
 
       return tmp;
