@@ -1,6 +1,5 @@
 import { Injectable } from '@nestjs/common';
 import { NftCategory } from './nfts.entity';
-//import { NftCategoryRepository } from './nfts.repository';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 

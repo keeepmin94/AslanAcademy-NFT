@@ -9,7 +9,6 @@ import { UserDonate } from './entities/userDonate.entity';
 import { JwtModule } from '@nestjs/jwt';
 import { PassportModule } from '@nestjs/passport';
 import { JwtStrategy } from './jwt.strategy';
-import { UserDonateRepository } from './repositories/userDonate.repository';
 import { NftCombination } from './entities/nftsCombination.entity';
 
 @Module({
@@ -22,12 +21,6 @@ import { NftCombination } from './entities/nftsCombination.entity';
     TypeOrmModule.forFeature([User, UserDonate, NftCombination]),
   ],
   controllers: [UserController],
-  providers: [
-    UserService,
-    UserRepository,
-    UserDonateRepository,
-    DiscordAuth,
-    JwtStrategy,
-  ],
+  providers: [UserService, UserRepository, DiscordAuth, JwtStrategy],
 })
 export class UserModule {}
