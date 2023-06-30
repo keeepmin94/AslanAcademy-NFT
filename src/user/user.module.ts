@@ -10,13 +10,18 @@ import { JwtModule } from '@nestjs/jwt';
 import { PassportModule } from '@nestjs/passport';
 import { JwtStrategy } from './jwt.strategy';
 import { NftCombination } from './entities/nftsCombination.entity';
+import { ConfigModule, ConfigService } from '@nestjs/config';
 
 @Module({
   imports: [
     PassportModule.register({ defaultStrategy: 'jwt' }),
-    JwtModule.register({
-      secret: 'Aslan1234',
-      signOptions: { expiresIn: 60 * 60 },
+    JwtModule.registerAsync({
+      imports: [ConfigModule],
+      useFactory: async (configService: ConfigService) => ({
+        secret: configService.get<string>('JWT_SECRET'),
+        signOptions: { expiresIn: 60 * 60 },
+      }),
+      inject: [ConfigService],
     }),
     TypeOrmModule.forFeature([User, UserDonate, NftCombination]),
   ],
