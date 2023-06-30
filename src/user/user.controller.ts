@@ -53,7 +53,9 @@ export class UserController {
   }
 
   @Get('/checkOverlap')
-  checkOverlap(@Query('combination') combination: string): Promise<boolean> {
+  checkOverlap(
+    @Query('combination') combination: string,
+  ): Promise<{ available: boolean }> {
     return this.userService.checkOverlap(combination);
   }
 
