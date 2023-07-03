@@ -270,8 +270,152 @@ None
 
 - **Notes:**
 
+  - 캐싱 추가
+
+---
+
+## ** 7. nft 파츠 목록 가져오기**
+
+모든 nft 파츠 목록들 반환
+
+- **URL**
+
+  /nfts/getParts
+
+- **Method:**
+
+  `GET`
+
+- **URL Params**
+
+  None
+
+- **Data Params**
+
+  None
+
+- **Success Response:**
+
+  nft 각 부위별 파츠 응답
+
+  - **Code:** 200 <br />
+    **Content:** <br />`[
+    {
+        "id": 1,
+        "name": "",
+        "idPosition": 1,
+        "layerPosition": 1,
+        "nftParts": [
+            {
+                "partId": 1,
+                "value": "",
+                "paid": false,
+                "imageUrl": ""
+            },
+            {
+                "partId": 2,
+                "value": "",
+                "paid": false,
+                "imageUrl": ""
+            },
+            {
+                "partId": 3,
+                "value": "",
+                "paid": false,
+                "imageUrl": ""
+            },
+            {
+                "partId": 4,
+                "value": "",
+                "paid": true,
+                "imageUrl": ""
+            },
+            {
+                "partId": 5,
+                "value": "",
+                "paid": true,
+                "imageUrl": ""
+            }
+        ]
+    },
+    {
+        "id": 2,
+        "name": "",
+        "idPosition": 2,
+        "layerPosition": 2,
+        "nftParts": [
+            {
+                "partId": 6,
+                "value": "",
+                "paid": false,
+                "imageUrl": ""
+            },
+            {
+                "partId": 7,
+                "value": "",
+                "paid": false,
+                "imageUrl": ""
+            },
+            {
+                "partId": 8,
+                "value": "",
+                "paid": false,
+                "imageUrl": ""
+            }
+        ]
+    }
+]`
+
+- **Error Response:**
+
+  - **Code:** 500 Internal Server Error <br />
+
+- **Notes:**
+
   - 이미지 ifps 등록 서버처리 할것인지?
   - todo: 조합 저장 전 이미 존재하는지 로직 추가
+
+---
+
+## ** 8. 유저들 nft 이미지 불러오기**
+
+유저들이 민팅한 nft 이미지 url 불러오기
+
+- **URL**
+
+  /user/usersNft
+
+- **Method:**
+
+  `GET`
+
+- **URL Params**
+
+  None
+
+- **Data Params**
+
+  None
+
+- **Success Response:**
+
+  유저들이 민팅한 nft 이미지 url, 조합id 응답
+
+  - **Code:** 200 <br />
+    **Content:** <br />`[
+    {
+        "combination": "01234567",
+        "imgUrl": ""
+    },
+    {
+        "combination": "01234568",
+        "imgUrl": ""
+    }
+]`
+
+- **Error Response:**
+
+  - **Code:** 500 Internal Server Error <br />
 
 ---
 
@@ -281,9 +425,14 @@ None
 docker-compose up -d
 ```
 
+### ERD
+
+![](https://velog.velcdn.com/images/jiumin/post/07f3430e-3979-4a9a-80a6-bb773b051152/image.png)
+
+(nft_combination테이블 생성일자 포함)
+
 ## todo
-- config 파일들 따로 설정
-- custom repository 삭제
+
 - 파일/폴더 정리
 - 코드 리팩터링
 - 코드 개선
