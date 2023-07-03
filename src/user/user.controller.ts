@@ -9,11 +9,13 @@ import {
   Query,
 } from '@nestjs/common';
 import { AuthUserDto } from './dto/auth-user.dto';
+import { MintUserDto } from './dto/mint-user.dto';
 import { UserService } from './user.service';
 import { AuthGuard } from '@nestjs/passport';
 import { GetUser } from './get-user.decorator';
 import { User } from './entities/user.entity';
 import { UserDonate } from './entities/userDonate.entity';
+import { NftCombination } from './entities/nftsCombination.entity';
 
 @Controller('user')
 export class UserController {
@@ -46,12 +48,6 @@ export class UserController {
     return this.userService.donate(amount, user);
   }
 
-  @Post('/test')
-  @UseGuards(AuthGuard()) //Req에 user넣어주기
-  test(@GetUser() user: User) {
-    console.log('user', user);
-  }
-
   @Get('/checkOverlap')
   checkOverlap(
     @Query('combination') combination: string,
@@ -63,8 +59,14 @@ export class UserController {
   @UseGuards(AuthGuard())
   mint(
     @GetUser() user: User,
-    @Body('combination') combination: string,
+    @Body(ValidationPipe) mintUserDto: MintUserDto,
   ): Promise<void> {
-    return this.userService.mint(combination, user);
+    console.log(mintUserDto);
+    return this.userService.mint(mintUserDto, user);
+  }
+
+  @Get('/usersNft')
+  getUsersNft(): Promise<NftCombination[]> {
+    return this.userService.getUsersNft();
   }
 }

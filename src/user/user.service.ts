@@ -6,6 +6,7 @@ import {
   HttpStatus,
 } from '@nestjs/common';
 import { AuthUserDto } from './dto/auth-user.dto';
+import { MintUserDto } from './dto/mint-user.dto';
 import { DiscordAuth } from './discordAuth';
 import { InjectRepository } from '@nestjs/typeorm';
 import { JwtService } from '@nestjs/jwt';
@@ -107,7 +108,7 @@ export class UserService {
       const com = await this.nftsCombinationRepository.findOne({
         where: { combination: combination },
       });
-      console.log(com);
+      //console.log(com);
       if (com) {
         console.log('있음');
         return { available: false };
@@ -115,17 +116,36 @@ export class UserService {
 
       return { available: true };
     } catch (error) {
+      console.log(error);
       throw new InternalServerErrorException();
     }
   }
 
-  async mint(combination: string, user: User): Promise<void> {
+  async mint(mintUserDto: MintUserDto, user: User): Promise<void> {
+    const { combination, imgUrl } = mintUserDto;
     try {
       await this.nftsCombinationRepository.save({
         combination: combination,
+        imgUrl: imgUrl,
         user: user,
       });
+      console.log(combination, imgUrl);
     } catch (error) {
+      console.log(error);
+      throw new InternalServerErrorException();
+    }
+  }
+
+  async getUsersNft(): Promise<NftCombination[]> {
+    try {
+      return await this.nftsCombinationRepository.find({
+        select: {
+          combination: true,
+          imgUrl: true,
+        },
+      });
+    } catch (error) {
+      console.log(error);
       throw new InternalServerErrorException();
     }
   }
