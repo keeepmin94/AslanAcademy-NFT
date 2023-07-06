@@ -6,14 +6,13 @@ import {
   HttpStatus,
 } from '@nestjs/common';
 import { AuthUserDto } from './dto/auth-user.dto';
+import { MintUserDto } from './dto/mint-user.dto';
 import { DiscordAuth } from './discordAuth';
 import { InjectRepository } from '@nestjs/typeorm';
-import { UserRepository } from './repositories/user.repository';
 import { JwtService } from '@nestjs/jwt';
 import { User } from './entities/user.entity';
+import { UserRepository } from './repositories/user.repository';
 import { UserDonate } from './entities/userDonate.entity';
-import { UserDonateRepository } from './repositories/userDonate.repository';
-//import { NftsCombinationRepository } from './repositories/nftsCombination.repository';
 import { Repository } from 'typeorm';
 import { NftCombination } from './entities/nftsCombination.entity';
 
@@ -22,10 +21,8 @@ export class UserService {
   constructor(
     @InjectRepository(UserRepository)
     private userRepository: UserRepository,
-    @InjectRepository(UserDonateRepository)
-    private userDonateRepository: UserDonateRepository,
-    // @InjectRepository(NftsCombinationRepository)
-    // private nftsCombinationRepository: NftsCombinationRepository,
+    @InjectRepository(UserDonate)
+    private userDonateRepository: Repository<UserDonate>,
     @InjectRepository(NftCombination)
     private nftsCombinationRepository: Repository<NftCombination>,
     private auth: DiscordAuth,
@@ -71,7 +68,9 @@ export class UserService {
 
   async checkDonate(user: User): Promise<UserDonate[]> {
     try {
-      const userDonates = await this.userDonateRepository.checkDonate(user);
+      const userDonates = await this.userDonateRepository.find({
+        where: { user: { id: user.id } },
+      });
       if (userDonates === null)
         throw new NotFoundException(`Can't find Users donations'`);
 
@@ -83,13 +82,13 @@ export class UserService {
 
   async donate(donationAmount: number, user: User): Promise<void> {
     try {
-      await this.userDonateRepository.donate(donationAmount, user);
+      await this.userDonateRepository.save({ donationAmount, user });
     } catch (error) {
       throw new InternalServerErrorException();
     }
   }
 
-  async checkOverlap(combination: string): Promise<boolean> {
+  async checkOverlap(combination: string): Promise<{ available: boolean }> {
     // try {
     //   const com = await this.nftsCombinationRepository.findOne({
     //     where: { combination: combination },
@@ -109,25 +108,44 @@ export class UserService {
       const com = await this.nftsCombinationRepository.findOne({
         where: { combination: combination },
       });
-      console.log(com);
+      //console.log(com);
       if (com) {
         console.log('있음');
-        return false;
+        return { available: false };
       }
 
-      return true;
+      return { available: true };
     } catch (error) {
+      console.log(error);
       throw new InternalServerErrorException();
     }
   }
 
-  async mint(combination: string, user: User): Promise<void> {
+  async mint(mintUserDto: MintUserDto, user: User): Promise<void> {
+    const { combination, imgUrl } = mintUserDto;
     try {
       await this.nftsCombinationRepository.save({
         combination: combination,
+        imgUrl: imgUrl,
         user: user,
       });
+      console.log(combination, imgUrl);
     } catch (error) {
+      console.log(error);
+      throw new InternalServerErrorException();
+    }
+  }
+
+  async getUsersNft(): Promise<NftCombination[]> {
+    try {
+      return await this.nftsCombinationRepository.find({
+        select: {
+          combination: true,
+          imgUrl: true,
+        },
+      });
+    } catch (error) {
+      console.log(error);
       throw new InternalServerErrorException();
     }
   }

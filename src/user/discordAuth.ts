@@ -1,10 +1,6 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { Client, GatewayIntentBits, Guild } from 'discord.js';
 
-const botToken =
-  'MTExMDYyODU3NzY2MzI3NTA2OA.GRcceG.eziMJRDp6uyxDgTjTundrslWgGJnAMXyLdHK80'; //MTA4NTE5MDIxODk2NzE3MTA5Mg.GdAMRY.IW3XcKE26ZSPLIgTTxT0pl-kGQGHOFjN0LmW64
-const serverId = '1045385827607400478'; //1085192270883602543
-
 @Injectable()
 export class DiscordAuth {
   private client: Client;
@@ -15,9 +11,9 @@ export class DiscordAuth {
     this.loginClient();
   }
   async loginClient() {
-    await this.client.login(botToken);
+    await this.client.login(process.env.DISCORD_BOT);
     console.log('로그인 함!');
-    this.server = await this.client.guilds.fetch(serverId);
+    this.server = await this.client.guilds.fetch(process.env.DISCORD_SERVER);
     console.log('서버 객체 생성');
   }
 

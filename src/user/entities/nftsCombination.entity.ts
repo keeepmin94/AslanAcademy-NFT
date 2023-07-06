@@ -3,6 +3,7 @@ import {
   Column,
   Entity,
   ManyToOne,
+  CreateDateColumn,
   OneToOne,
   PrimaryGeneratedColumn,
 } from 'typeorm';
@@ -15,6 +16,12 @@ export class NftCombination extends BaseEntity {
 
   @Column({ length: 8 })
   combination: string;
+
+  @Column()
+  imgUrl: string;
+
+  @CreateDateColumn()
+  createAt: Date;
 
   @OneToOne((type) => User, (user) => user.userNft, { eager: false })
   user: User;

@@ -5,7 +5,7 @@ import { NftsService } from './nfts.service';
 @Controller('nfts')
 export class NftsController {
   constructor(private nftsService: NftsService) {}
-  @Get()
+  @Get('getParts')
   getAllNFTParts(): Promise<NftCategory[]> {
     return this.nftsService.getAllNftParts();
   }
