@@ -140,6 +140,7 @@ export class UserService {
     try {
       return await this.nftsCombinationRepository.find({
         select: {
+          id: true,
           combination: true,
           imgUrl: true,
         },
