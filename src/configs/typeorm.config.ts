@@ -2,7 +2,7 @@ import { TypeOrmModuleOptions } from '@nestjs/typeorm';
 
 export const typeORMConfig: TypeOrmModuleOptions = {
   type: 'mysql',
-  host: 'localhost',
+  host: 'host.docker.internal', //'host.docker.internal', //'localhost', //'host.docker.internal'
   port: 3306,
   username: 'root',
   password: 'test1234',
