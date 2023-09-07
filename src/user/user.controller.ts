@@ -42,6 +42,12 @@ export class UserController {
     return this.userService.checkDonate(user);
   }
 
+  @Get('/enable')
+  @UseGuards(AuthGuard())
+  enable(): Promise<void> {
+    return;
+  }
+
   @Post('/donate')
   @UseGuards(AuthGuard())
   donate(@GetUser() user: User, @Body('amount') amount: number): Promise<void> {
