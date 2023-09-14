@@ -12,9 +12,8 @@ export class DiscordAuth {
   }
   async loginClient() {
     await this.client.login(process.env.DISCORD_BOT);
-    console.log('로그인 함!');
+    console.log('클라이언트 로그인 성공');
     this.server = await this.client.guilds.fetch(process.env.DISCORD_SERVER);
-    console.log('서버 객체 생성');
   }
 
   async searchMember(discordName: string) {
@@ -23,21 +22,9 @@ export class DiscordAuth {
       // 특정 길드에서 이름이 포함된 멤버를 최대 limit명까지 검색
       const members = await this.server.members.search({
         query: discordName,
-        limit: 5,
+        limit: 1,
       });
 
-      //console.log(members);
-
-      // let isExist = false;
-      // // //검색된 멤버의 정보 출력
-      // let tmp;
-      // members.forEach((member) => {
-      //   if (tag === member.user.discriminator.toString()) {
-      //     isExist = true;
-      //     tmp = member;
-      //     return false;
-      //   }
-      // });
       let isExist = false;
       let tmp;
       members.forEach((member) => {
