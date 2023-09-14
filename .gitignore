@@ -37,5 +37,5 @@ lerna-debug.log*
 # docker
 /data
 
-.env
-docker-compose.yml
+/.env
+/docker-compose.yml
