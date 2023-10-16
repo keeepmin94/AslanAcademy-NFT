@@ -1,0 +1,62 @@
+version: '3'
+
+networks:
+  app-tier:
+    driver: bridge
+# 컴퓨터들(컨테이너들)
+services:
+  # 컨테이너 이름
+  aslan_db_container:
+    container_name: aslan_db_container
+    networks:
+      - app-tier
+    image: mysql:8.0
+    environment:
+      MYSQL_ROOT_PASSWORD: test1234
+      MYSQL_DATABASE: AslanTest
+    ports:
+      - 3306:3306
+    volumes:
+      - ./data:/var/lib/mysql
+
+  # 컨테이너 이름
+  wanted_server_container:
+    networks:
+      - app-tier
+    build:
+      # 파일경로
+      context: .
+      # 파일명
+      dockerfile: ./Dockerfile
+    volumes:
+      - ./:/usr/src/app/
+    restart: always
+    ports:
+      - 8000:8000
+    links:
+      - aslan_db_container
+    depends_on:
+      - aslan_db_container
+    command: ['sh', '-c', 'sleep 20 && npm run start:dev']
+# ------------------
+
+# version: '3'
+# services:
+#   db:
+#     image: mysql:latest
+#     environment:
+#       MYSQL_ROOT_PASSWORD: test1234
+#       MYSQL_DATABASE: AslanTest
+#     ports:
+#       - 3306:3306
+#     # volumes:
+#     #   - ./data:/var/lib/mysql
+#   aslan-server:
+#     build:
+#       dockerfile: ./Dockerfile
+#       context: .
+#     ports:
+#       - '8000:8000'
+#     volumes:
+#       - ./:/usr/src/app/
+#     command: ['sh', '-c', 'sleep 20 && npm run start:dev']
