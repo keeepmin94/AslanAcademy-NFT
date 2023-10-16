@@ -9,4 +9,9 @@ export class NftsController {
   getAllNFTParts(): Promise<NftCategory[]> {
     return this.nftsService.getAllNftParts();
   }
+
+  @Get('test')
+  getTest(): { message: string } {
+    return { message: 'Welcome Aslan!' };
+  }
 }
