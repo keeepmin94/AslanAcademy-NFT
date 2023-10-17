@@ -136,9 +136,42 @@ export class UserService {
     }
   }
 
-  async getUsersNft(): Promise<NftCombination[]> {
+  async getNftsMain(): Promise<NftCombination[]> {
     try {
       return await this.nftsCombinationRepository.find({
+        select: {
+          imgUrl: true,
+        },
+        take: 10,
+        order: {
+          id: 'DESC',
+        },
+      });
+    } catch (error) {
+      console.log(error);
+      throw new InternalServerErrorException();
+    }
+  }
+
+  async getAllUsersNft(): Promise<NftCombination[]> {
+    try {
+      return await this.nftsCombinationRepository.find({
+        select: {
+          combination: true,
+          imgUrl: true,
+        },
+      });
+    } catch (error) {
+      console.log(error);
+      throw new InternalServerErrorException();
+    }
+  }
+
+  async getUserNft(user: User): Promise<NftCombination> {
+    try {
+      return await this.nftsCombinationRepository.findOne({
+        relations: { user: true },
+        where: { user: { id: user.id } },
         select: {
           id: true,
           combination: true,

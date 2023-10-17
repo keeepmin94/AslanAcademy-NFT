@@ -72,7 +72,18 @@ export class UserController {
   }
 
   @Get('/usersNft')
-  getUsersNft(): Promise<NftCombination[]> {
-    return this.userService.getUsersNft();
+  getAllUsersNft(): Promise<NftCombination[]> {
+    return this.userService.getAllUsersNft();
+  }
+
+  @Get('/nftMain')
+  getNftsMain(): Promise<NftCombination[]> {
+    return this.userService.getNftsMain();
+  }
+
+  @Get('/userNft')
+  @UseGuards(AuthGuard())
+  getUserNft(@GetUser() user: User): Promise<NftCombination> {
+    return this.userService.getUserNft(user);
   }
 }
