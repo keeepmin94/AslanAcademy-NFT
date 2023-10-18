@@ -1,438 +1,243 @@
-## ** 1. 지갑 로그인**
+# 아슬란 아카데미 NFT 서버 명세서
 
-지갑 로그인후 요청하는 request. 지갑 로그인 후 저장되어있는 유저정보가 있으면 토큰 응답. 없을시 에러 응답
+## 수정사항
 
-- **URL**
+AWS EC2 만으로 베포할시 용량 문제가 있어서 EC2, RDS를 이용했습니다.
+도커 삭제했습니다.
+서버 고정 ip, port : http://3.39.101.97:8000
 
-  /user/login?walletAddress=지갑주소
-
-- **Method:**
-
-  `GET`
-
-- **URL Params**
-
-  **Required:**
-
-  `walletAddress=[string]`
-
-- **Data Params**
-
-  None
-
-- **Success Response:**
-
-  유저 정보 있을시 민팅이나 민팅 조회등 기능 수행 가능한 토큰 발급
-
-  - **Code:** 200 <br />
-    **Content:** <br />`{
-    "accessToken": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJkaXNjb3JkSWQiOiI0MTE4MDA0MTc3Mzk5OTcxODQiLCJpYXQiOjE2ODc3NzM0MzgsImV4cCI6MTY4Nzc3NzAzOH0.XTOpGFwJEtO4LB3xDLBIcSj4IhPLq7ON4EefhK2qmek"
-}`
-
-- **Error Response:**
-
-  유저 정보 없을시 에러 반환. 지갑 로그인 한 상태로 디스코드 인증을 통해 유저 정보 등록 요청
-
-  - **Code:** 404 NOT FOUND <br />
-    **Content:**
-    `{`
-    `"statusCode": 404,`
-    `"message": "Can't find User
-    0xf1DDF8a3B9f86aF120C4f7E5AdA662975336C9aa",`
-    `"error": "Not Found"`
-    `}`
-
----
-
-## ** 2. 디스코드 인증**
-
-클라이언트에서 지갑 로그인한 상태에서 디스코드 인증 요청.
-아슬란 아카데미 디스코드에 있는 경우 유저 정보를 저장 후 토큰 응답.
-없을시 에러 응답.
-
-- **URL**
-
-  /user/auth
-
-- **Method:**
-
-  `POST`
-
-- **URL Params**
-
-None
-
-- **Data Params**
-
-  `walletAddress=[string]`
-  `discordTag=[string]`
-
-- **Success Response:**
-
-  디스코드 인증 성공시 유저 정보 저장 후 토큰 발급
-
-  - **Code:** 201 <br />
-    **Content:** <br />`{
-    "accessToken": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJkaXNjb3JkSWQiOiI0MTE4MDA0MTc3Mzk5OTcxODQiLCJpYXQiOjE2ODc3NzM0MzgsImV4cCI6MTY4Nzc3NzAzOH0.XTOpGFwJEtO4LB3xDLBIcSj4IhPLq7ON4EefhK2qmek"
-}`
-
-- **Error Response:**
-
-  유저 정보 없을시 에러 반환. 지갑 로그인 한 상태로 디스코드 인증을 통해 유저 정보 등록 요청
-
-  - **Code:** 404 NOT FOUND <br />
-    **Content:**
-    `{
-    "statusCode": 404,`
-    `"message": "${id} User doesn't exist on our Discord server. ",`
-    `"error": "Not Found"`
-    `}`
-
-- **Notes:**
-
-  discordTag는디스코드 사용자명 기입
-  예전 형식(홍길동#0123)인 경우 #앞쪽만(홍길동) 입력
-
----
-
-## ** 3. 기부**
-
-프리미엄 파츠 사용을 위한 유저의 코인 기부
-
-- **URL**
-
-  /user/donate
-
-- **Method:**
-
-  `POST`
-
-- **URL Params**
-
-None
-
-- **Data Params**
-
-  `amount=[number]`
-
-- **Authoriaztion**
-
-  **Required:**
-  Bearer Token
-
-- **Success Response:**
-
-  유저의 기부 내역 저장
-
-  - **Code:** 201 <br />
-
-- **Error Response:**
-
-  저장 실패시 에러
-
-  - **Code:** 500 Internal Server Error <br />
-
----
-
-## ** 4. 기부 내역 확인**
-
-프리미엄 파츠 사용을 위한 유저의 기부 내역 확인
-
-- **URL**
-
-  /user/isDonate
-
-- **Method:**
-
-  `GET`
-
-- **URL Params**
-
-  **Required:**
-
-  `walletAddress=[string]`
-
-- **Data Params**
-
-  None
-
-- **Authoriaztion**
-
-  **Required:**
-  Bearer Token
-
-- **Success Response:**
-
-  기부 내역 데이터 존재시 반환
-
-  - **Code:** 200 <br />
-    **Content:** <br />`{
-    "accessToken": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJkaXNjb3JkSWQiOiI0MTE4MDA0MTc3Mzk5OTcxODQiLCJpYXQiOjE2ODc3NzM0MzgsImV4cCI6MTY4Nzc3NzAzOH0.XTOpGFwJEtO4LB3xDLBIcSj4IhPLq7ON4EefhK2qmek"
-}`
-
-- **Error Response:**
-
-  기부 내역 없을시 404 NOT FOUND
-
-  - **Code:** 404 NOT FOUND <br />
-    **Content:**
-    `{`
-    `"statusCode": 404,`
-    `"message": "Can't find User
-    0xf1DDF8a3B9f86aF120C4f7E5AdA662975336C9aa",`
-    `"error": "Not Found"`
-    `}`
-
----
-
-## ** 5. 민팅 조합 중복 체크**
-
-유저가 조합한 민팅 조합이 중복인지 체크
-
-- **URL**
-
-  /user/checkOverlap
-
-- **Method:**
-
-  `GET`
-
-- **URL Params**
-
-  **Required:**
-
-  `combination=[string]`
-
-- **Data Params**
-
-  None
-
-- **Authoriaztion**
-
-  **Required:**
-  Bearer Token
-
-- **Success Response:**
-
-  중복 조합 없으면 true 응답, 이미 있을시 false 응답
-
-  - **Code:** 200 <br />
-    **Content:** <br />`{
-    "available": true || false
-}`
-
-- **Error Response:**
-
-  - **Code:** 500 Internal Server Error <br />
-
-- **Notes:**
-
-  중복 체크 결과를 true, false로 반환 할것인지 에러 처리로 할 것인지?
-
----
-
-## ** 6. 민팅 등록**
-
-민팅시 유저의 민팅 조합 저장
-
-- **URL**
-
-  /user/mint
-
-- **Method:**
-
-  `POST`
-
-- **URL Params**
-
-  None
-
-- **Data Params**
-
-  **Required:**
-
-  `combination=[string]`
-
-- **Authoriaztion**
-
-  **Required:**
-  Bearer Token
-
-- **Success Response:**
-
-  저장 성공시 200 코드 응답
-
-  - **Code:** 200 <br />
-
-- **Error Response:**
-
-  - **Code:** 500 Internal Server Error <br />
-
-- **Notes:**
-
-  - 캐싱 추가
-
----
-
-## ** 7. nft 파츠 목록 가져오기**
-
-모든 nft 파츠 목록들 반환
-
-- **URL**
-
-  /nfts/getParts
-
-- **Method:**
-
-  `GET`
-
-- **URL Params**
-
-  None
-
-- **Data Params**
-
-  None
-
-- **Success Response:**
-
-  nft 각 부위별 파츠 응답
-
-  - **Code:** 200 <br />
-    **Content:** <br />`[
-    {
-        "id": 1,
-        "name": "",
-        "idPosition": 1,
-        "layerPosition": 1,
-        "nftParts": [
-            {
-                "partId": 1,
-                "value": "",
-                "paid": false,
-                "imageUrl": ""
-            },
-            {
-                "partId": 2,
-                "value": "",
-                "paid": false,
-                "imageUrl": ""
-            },
-            {
-                "partId": 3,
-                "value": "",
-                "paid": false,
-                "imageUrl": ""
-            },
-            {
-                "partId": 4,
-                "value": "",
-                "paid": true,
-                "imageUrl": ""
-            },
-            {
-                "partId": 5,
-                "value": "",
-                "paid": true,
-                "imageUrl": ""
-            }
-        ]
-    },
-    {
-        "id": 2,
-        "name": "",
-        "idPosition": 2,
-        "layerPosition": 2,
-        "nftParts": [
-            {
-                "partId": 6,
-                "value": "",
-                "paid": false,
-                "imageUrl": ""
-            },
-            {
-                "partId": 7,
-                "value": "",
-                "paid": false,
-                "imageUrl": ""
-            },
-            {
-                "partId": 8,
-                "value": "",
-                "paid": false,
-                "imageUrl": ""
-            }
-        ]
-    }
-]`
-
-- **Error Response:**
-
-  - **Code:** 500 Internal Server Error <br />
-
-- **Notes:**
-
-  - 이미지 ifps 등록 서버처리 할것인지?
-  - todo: 조합 저장 전 이미 존재하는지 로직 추가
-
----
-
-## ** 8. 유저들 nft 이미지 불러오기**
-
-유저들이 민팅한 nft 이미지 url 불러오기
-
-- **URL**
-
-  /user/usersNft
-
-- **Method:**
-
-  `GET`
-
-- **URL Params**
-
-  None
-
-- **Data Params**
-
-  None
-
-- **Success Response:**
-
-  유저들이 민팅한 nft 이미지 url, 조합id 응답
-
-  - **Code:** 200 <br />
-    **Content:** <br />`[
-    {
-        "combination": "01234567",
-        "imgUrl": ""
-    },
-    {
-        "combination": "01234568",
-        "imgUrl": ""
-    }
-]`
-
-- **Error Response:**
-
-  - **Code:** 500 Internal Server Error <br />
-
----
-
-테스트용 local db 설정 docker-compose.yml에 작성
-
-```
-docker-compose up -d
-```
-
-### ERD
+## DB_ERD
 
 ![](https://velog.velcdn.com/images/jiumin/post/07f3430e-3979-4a9a-80a6-bb773b051152/image.png)
 
-(nft_combination테이블 생성일자 포함)
+## API
 
-## todo
+### 1. 지갑 로그인
 
-- 파일/폴더 정리
-- 코드 리팩터링
-- 코드 개선
+민팅, 기부 등 기능 실행시 로그인 조건을 전제로 합니다.
+로그인 성공시 jwt 토큰을 응답합니다.
+(지갑 모양 버튼을 눌렀을때 해당 api 요청)
+단, 지갑 주소 조회 후 db에 등록된 유저가 아닐시 디스코드 인증 요청 에러 응답함
+
+Request
+(Path Variable:로그인 할 지갑주소)
+
+```
+[Get] http://3.39.101.97:8000/user/login?walletAddress=0xf1DDF8a3B9f86aF120C4f7E5AdA662975336C9Bd
+
+```
+
+Response
+로그인 성공시
+
+```
+{
+    "accessToken": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJkaXNjb3JkSWQiOiI0MTE4MDA0MTc3Mzk5OTcxODQiLCJpYXQiOjE2OTc1MjcyNjksImV4cCI6MTY5NzUzMDg2OX0.AmeZcrsgdfaDRi6qP5f6XEQNmcwWs3La3GFFf2HTLy4"
+}
+```
+
+### 2. 디스코드 인증
+
+지갑 로그인한 유저가 db에 등록된 유저가 아닐시 디스코드 인증을 합니다.
+아슬란 아카데미 디스코드 서버를 조회한 후 인증 성공시 db에 유저 정보를 저장 후 jwt 토큰을 응답합니다.
+요청 바디에 지갑주소와 디스코드 닉네임을 입력해 주세요.
+
+Request
+
+```
+[Post] http://3.39.101.97:8000/user/auth
+
+body:
+
+{
+    "walletAddress": "0xf1DDF8a3B9f86aF120C4f7E5AdA662975336C9Bd",
+    "discordTag" : "jiumin94"
+}
+```
+
+Response
+
+```
+{
+    "accessToken": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJkaXNjb3JkSWQiOiI0MTE4MDA0MTc3Mzk5OTcxODQiLCJpYXQiOjE2OTc1MjcyNDcsImV4cCI6MTY5NzUzMDg0N30.AllYf4-97kIq1TGUkMvnReVv5iq7trSJorELc8izg4c"
+}
+```
+
+### 3. 기부
+
+nft 민팅시 프리미엄 파츠를 원할 경우 기부를 통해서 사용할 수 있습니다.
+컨트랙트 기부 함수 진행 후 해당 api를 통해 유저의 기부내역을 db에 저장합니다.
+(로그인 시 발급 받은 jwt 토큰을 request 요청시 header에 bearer토큰으로 넣어주셔야 합니다.)
+요청 바디에는 기부한 양을 int 형식으로 넣어주세요.
+
+Request
+
+```
+[Post] http://3.39.101.97:8000/user/donate
+
+body:
+
+{
+    "amount": 50
+}
+```
+
+### 4. 기부내역 확인
+
+유저의 기부 내역을 확인 하는 api입니다.
+(로그인 시 발급 받은 jwt 토큰을 request 요청시 header에 bearer토큰으로 넣어주셔야 합니다.)
+토큰을 이용해 요청한 유저를 확인해 해당 유저의 기부내역을 확인합니다.
+해당 유저의 기부 내역 있을시 기부내역 정보를 응답합니다.
+없을시 에러를 응답합니다.
+
+Request
+
+```
+[Get] http://3.39.101.97:8000/user/isDonate
+```
+
+### 5. 민팅 중복 조합 체크
+
+유저가 조합한 nft 조합 번호를 db에서 조회 합니다.
+중복값이 없을시 민팅 가능하다는 true를 응답하고
+증복값이 존재할 경우 민팅 불가능 하다는 false를 응답합니다.
+
+Request
+(Path Variable:조합 id)
+
+```
+[Get] http://3.39.101.97:8000/user/checkOverlap?combination=123456789
+```
+
+Response
+
+```
+{
+  "available" : true || false
+}
+```
+
+### 5. 민팅 등록
+
+유저가 스마트컨트랙트로 민팅 후 유저의 민팅 내역을 저장합니다.
+요청 바디에는 조합한 조합번호 id와 민팅한 nft의 ipfs 이미지 주소를 넣어주세요.
+
+Request
+
+```
+[Post] http://3.39.101.97:8000/user/mint
+
+body:
+
+{
+    "combination" : "12345678",
+    "imgUrl" : "http://ipfs.aslantest.co.kr"
+}
+```
+
+### 6. nft 파츠정보 가져오기
+
+Nft의 파츠 정보들을 가져옵니다.
+해당 파츠의 정보와 이미지 주소, 프리미엄 파츠인지 등을 알려줍니다.
+
+Request
+
+```
+[Get] http://3.39.101.97:8000/nfts/getParts
+
+```
+
+### 6. (Main 페이지용) 유저들 nft 이미지 불러오기
+
+Main 페이지에 나오는 유저들이 민팅한 nft들의 이미지 주소를 응답합니다. 최근 10개의 이미지 주소만 불러옵니다.
+
+Request
+
+```
+[Get] http://3.39.101.97:8000/user/nftMain
+
+```
+
+Response
+
+```
+[
+    {
+        "imgUrl": "http://ipfs.aslantest1.co.kr"
+    },
+    {
+        "imgUrl": "http://ipfs.aslantest2.co.kr"
+    },
+    {
+        "imgUrl": "http://ipfs.aslantest3.co.kr"
+    }
+
+    .
+    .
+    .
+]
+```
+
+### 7. (Main 페이지용) 유저들 nft 이미지 불러오기
+
+유저들이 민팅한 모든 nft의 이미지 주소와 조합 id를 응답합니다.
+
+Request
+
+```
+[Get] http://3.39.101.97:8000/user/usersNft
+
+```
+
+Response
+
+```
+[
+    {
+        "combination": "12345678",
+        "imgUrl": "http://ipfs.aslantest1.co.kr"
+    },
+    {
+        "combination": "23456789",
+        "imgUrl": "http://ipfs.aslantest2.co.kr"
+    },
+    {
+        "combination": "34567890",
+        "imgUrl": "http://ipfs.aslantest3.co.kr"
+    },
+
+    .
+    .
+    .
+]
+```
+
+### 8. (Main 페이지용) 유저들 nft 이미지 불러오기
+
+요청한 유저의 유저 정보와 유저가 요청한 nft 정보를 가져옵니다.
+(로그인 시 발급 받은 jwt 토큰을 request 요청시 header에 bearer토큰으로 넣어주셔야 합니다.)
+토큰을 이용해 요청한 유저를 확인해 해당 유저의 nft를 확인합니다.
+
+Request
+
+```
+[Get] http://3.39.101.97:8000/user/userNft
+
+```
+
+Response
+
+```
+{
+    "id": 1,
+    "combination": "12345678",
+    "imgUrl": "http://ipfs.aslantest.co.kr",
+    "user": {
+        "id": 1,
+        "walletAddress": "0xf1DDF8a3B9f86aF120C4f7E5AdA662975336C9Bd",
+        "discordId": "411800417739997184",
+        "discordTag": "jiumin94",
+        "createAt": "2023-10-16T09:34:04.626Z"
+    }
+}
+```
