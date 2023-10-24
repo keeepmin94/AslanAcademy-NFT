@@ -13,7 +13,7 @@ export class UserDonate extends BaseEntity {
   @PrimaryGeneratedColumn()
   id: number;
 
-  @Column()
+  @Column('decimal', { precision: 6, scale: 2 })
   donationAmount: number;
 
   @CreateDateColumn()
