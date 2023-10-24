@@ -4,6 +4,7 @@ import {
   InternalServerErrorException,
   HttpException,
   HttpStatus,
+  BadRequestException,
 } from '@nestjs/common';
 import { AuthUserDto } from './dto/auth-user.dto';
 import { MintUserDto } from './dto/mint-user.dto';
@@ -66,15 +67,15 @@ export class UserService {
     return { accessToken: accessToken };
   }
 
-  async checkDonate(user: User): Promise<UserDonate[]> {
+  async checkDonate(user: User): Promise<{ available: boolean }> {
     try {
       const userDonates = await this.userDonateRepository.find({
         where: { user: { id: user.id } },
       });
-      if (userDonates === null)
-        throw new NotFoundException(`Can't find Users donations'`);
+      if (userDonates === null) return { available: false };
+      //throw new NotFoundException(`Can't find Users donations'`);
 
-      return userDonates;
+      return { available: true };
     } catch (error) {
       throw new InternalServerErrorException();
     }
@@ -82,6 +83,9 @@ export class UserService {
 
   async donate(donationAmount: number, user: User): Promise<void> {
     try {
+      if (donationAmount <= 0)
+        throw new BadRequestException('금액이 잘못되었습니다.');
+
       await this.userDonateRepository.save({ donationAmount, user });
     } catch (error) {
       throw new InternalServerErrorException();

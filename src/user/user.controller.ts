@@ -38,7 +38,7 @@ export class UserController {
 
   @Get('/isDonate')
   @UseGuards(AuthGuard())
-  checkDonate(@GetUser() user: User): Promise<UserDonate[]> {
+  checkDonate(@GetUser() user: User): Promise<{ available: boolean }> {
     return this.userService.checkDonate(user);
   }
 
