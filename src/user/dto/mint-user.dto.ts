@@ -2,7 +2,7 @@ import { IsString, Length, Matches, IsNumberString } from 'class-validator';
 
 export class MintUserDto {
   @IsString()
-  @Length(12, 12)
+  @Length(11, 11)
   @IsNumberString()
   combination: string;
 

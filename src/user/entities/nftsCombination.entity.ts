@@ -14,7 +14,7 @@ export class NftCombination extends BaseEntity {
   @PrimaryGeneratedColumn()
   id: number;
 
-  @Column({ length: 12 })
+  @Column({ length: 11 })
   combination: string;
 
   @Column()
