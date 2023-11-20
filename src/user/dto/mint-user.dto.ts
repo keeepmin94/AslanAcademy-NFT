@@ -7,6 +7,6 @@ export class MintUserDto {
   combination: string;
 
   @IsString()
-  @Matches(/^http:\/\/.+$/, { message: 'imgUrl should start with http://' })
+  @Matches(/^https:\/\/.+$/, { message: 'imgUrl should start with https://' })
   imgUrl: string;
 }
