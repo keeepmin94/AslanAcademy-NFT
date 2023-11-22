@@ -7,7 +7,7 @@ RUN npm install
 
 COPY . /usr/
 
-CMD ["npm", "run", "start:dev"]
+CMD ["npm", "run", "start:prod"]
 
 # ----------------------------
 
