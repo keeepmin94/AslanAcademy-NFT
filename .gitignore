@@ -44,3 +44,5 @@ lerna-debug.log*
 # /Dockerfile
 /docker-compose.yml
 /.dockerignore
+
+/src/configs
