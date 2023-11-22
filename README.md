@@ -13,10 +13,12 @@
 ## Table of Contents
 
 - [개요](#개요)
+- [Skills](#skills)
 - [API Reference](#api-reference)
-- [ERD](#ERD)
-- [프로젝트 진행 및 이슈 관리](#프로젝트-진행-및-이슈-관리)
+- [프로젝트 설계 및 구조](#프로젝트-설계-및-구조)
+- [ERD](#erd)
 - [구현과정(설계 및 의도)](<#구현과정(설계-및-의도)>)
+- [민팅 방법](#민팅-방법)
 - [TIL 및 회고](#til-및-회고)
 - [Authors](#authors)
 
@@ -32,7 +34,7 @@
 또한, 일반적인 NFT 민팅과 차별성을 두어 유저가 직접 NFT를 `커스터마이징`할 수 있습니다. 이때 유저가 커스터마이징한 조합들을 기억해 `중복`된 커스텀을 민팅 전에 `방지`합니다. 이로써 유저들은 자신만의 `특별`하고 `유니크`한 NFT를 직접 민팅할 수 있습니다.
 <br/>
 
-## Skils
+## Skills
 
 <div align="center">
 
@@ -59,7 +61,7 @@ Deploy <br/> ![amazonaws](https://img.shields.io/badge/amazonaws-232F3E.svg?styl
 
 ## ERD
 
-<img src="./public/aslan_ERD.png" alt="logo" width="90%" />
+<img src="./public/aslan_erd.png" alt="logo" width="90%" />
 <br/>
 
 
