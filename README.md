@@ -102,12 +102,15 @@ Deploy <br/> ![amazonaws](https://img.shields.io/badge/amazonaws-232F3E.svg?styl
 
 
 ## 민팅 방법
-**로그인**
-<img src="./public/login_.gif" alt="logo" align="center" width="100%" />  <br/>
-**기부**
-<img src="./public/donate_.gif" alt="logo" align="center" width="100%" />  <br/>
-**민팅**
+### 로그인
+<img src="./public/login_.gif" alt="logo" align="center" width="100%" />  
+
+### 기부
+<img src="./public/donate_.gif" alt="logo" align="center" width="100%" />  
+
+### 민팅
 <img src="./public/mint_.gif" alt="logo" align="center" width="100%" />  
+<br/>
 
 ## TIL 및 회고
 
